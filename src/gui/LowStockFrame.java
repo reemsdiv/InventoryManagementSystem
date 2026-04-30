@@ -1,9 +1,12 @@
 package gui;
 
+import database.ProductDAO;
+import model.Product;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.*;
 import java.awt.*;
+import java.util.List;
 
 public class LowStockFrame extends JFrame {
 
@@ -12,26 +15,24 @@ public class LowStockFrame extends JFrame {
     private JLabel statusLabel;
 
     public LowStockFrame() {
-
         setTitle("Low Stock Alert");
         setSize(950, 600);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setResizable(false);
 
-        // Background Image (same style as your first frame)
+        // Background
         ImageIcon bgIcon = new ImageIcon("background3.jpg");
         Image bgImage = bgIcon.getImage().getScaledInstance(950, 600, Image.SCALE_SMOOTH);
         JLabel background = new JLabel(new ImageIcon(bgImage));
         background.setLayout(new BorderLayout());
         setContentPane(background);
 
-        // Root Panel
         JPanel root = new JPanel(new BorderLayout(20, 20));
         root.setBorder(new EmptyBorder(25, 30, 25, 30));
         root.setOpaque(false);
 
-        // ================= HEADER =================
+        // ===== HEADER =====
         JLabel title = new JLabel("Low Stock Products");
         title.setFont(new Font("SansSerif", Font.BOLD, 18));
 
@@ -39,7 +40,7 @@ public class LowStockFrame extends JFrame {
         headerPanel.setOpaque(false);
         headerPanel.add(title, BorderLayout.WEST);
 
-        // ================= TABLE =================
+        // ===== TABLE =====
         DefaultTableModel model = new DefaultTableModel(
                 new Object[]{"Product ID", "Name", "Category", "Quantity", "Min Level"}, 0
         ) {
@@ -62,16 +63,11 @@ public class LowStockFrame extends JFrame {
         tableHeader.setBackground(new Color(245, 220, 230));
         tableHeader.setReorderingAllowed(false);
 
-        DefaultTableCellRenderer center = new DefaultTableCellRenderer();
-        center.setHorizontalAlignment(SwingConstants.CENTER);
-        productTable.getColumnModel().getColumn(3).setCellRenderer(center);
-        productTable.getColumnModel().getColumn(4).setCellRenderer(center);
-
         JScrollPane scrollPane = new JScrollPane(productTable);
         scrollPane.getViewport().setBackground(new Color(252, 244, 247));
         scrollPane.setBorder(BorderFactory.createLineBorder(new Color(220, 210, 215)));
 
-        // ================= BOTTOM BAR =================
+        // ===== BOTTOM =====
         statusLabel = new JLabel("Status: Ready");
         statusLabel.setFont(new Font("SansSerif", Font.PLAIN, 12));
 
@@ -85,6 +81,7 @@ public class LowStockFrame extends JFrame {
         refreshButton.setPreferredSize(new Dimension(110, 32));
         backButton.setPreferredSize(new Dimension(110, 32));
 
+        refreshButton.addActionListener(e -> loadLowStock());
         backButton.addActionListener(e -> {
             dispose();
             new HomeFrame().setVisible(true);
@@ -100,13 +97,45 @@ public class LowStockFrame extends JFrame {
         bottomPanel.add(statusLabel, BorderLayout.WEST);
         bottomPanel.add(buttonRow, BorderLayout.EAST);
 
-        // ================= ADD EVERYTHING =================
+        // ===== ASSEMBLE =====
         root.add(headerPanel, BorderLayout.NORTH);
         root.add(scrollPane, BorderLayout.CENTER);
         root.add(bottomPanel, BorderLayout.SOUTH);
 
         add(root, BorderLayout.CENTER);
 
+        loadLowStock();
         setVisible(true);
+    }
+
+    private void loadLowStock() {
+        try {
+            ProductDAO dao = new ProductDAO();
+            List<Product> list = dao.getLowStock();
+
+            DefaultTableModel model = (DefaultTableModel) productTable.getModel();
+            model.setRowCount(0);
+
+            for (Product p : list) {
+                model.addRow(new Object[]{
+                        p.getId(),
+                        p.getName(),
+                        p.getCategory(),
+                        p.getQuantity(),
+                        p.getMinStock()
+                });
+            }
+
+            if (list.isEmpty()) {
+                statusLabel.setText("Status: All stock levels are OK.");
+            } else {
+                statusLabel.setText("Status: " + list.size() + " low stock item(s) found.");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            statusLabel.setText("Status: Error loading data.");
+        }
     }
 }
