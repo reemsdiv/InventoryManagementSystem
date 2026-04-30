@@ -41,7 +41,7 @@ public class HomeFrame extends JFrame {
         add(topPanel, BorderLayout.NORTH);
 
         //center buttons (SAME VALUES)
-        JPanel centerPanel = new JPanel(new GridLayout(2, 2, 25, 25));
+        JPanel centerPanel = new JPanel(new GridLayout(2, 3, 25, 25));
         centerPanel.setBorder(BorderFactory.createEmptyBorder(40, 180, 40, 180));
 
         Border btnBorder = BorderFactory.createLineBorder(Color.GRAY, 1);
@@ -51,6 +51,7 @@ public class HomeFrame extends JFrame {
         JButton btnStock = createButton("Stock", "QrCode.png", btnsFont, btnBorder);
         JButton btnLowStock = createButton("View Low Stock", "Warning.png", btnsFont, btnBorder);
         JButton btnReports = createButton("Reports", "ReportIcon.png", btnsFont, btnBorder);
+        JButton btnTips = createButton("Tips", "Tips.png", btnsFont, btnBorder);
 
        
         btnProducts.addActionListener(e -> {
@@ -72,11 +73,18 @@ public class HomeFrame extends JFrame {
             dispose();
             new ReportsFrameUI().setVisible(true);
         });
+        
+        btnTips.addActionListener(e -> {
+        dispose();
+        new TipsFrame().setVisible(true);
+        });
+        
 
         centerPanel.add(btnProducts);
         centerPanel.add(btnStock);
         centerPanel.add(btnLowStock);
         centerPanel.add(btnReports);
+        centerPanel.add(btnTips);
 
         add(centerPanel, BorderLayout.CENTER);
 
