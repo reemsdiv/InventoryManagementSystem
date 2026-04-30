@@ -95,6 +95,24 @@ public class ProductDAO {
             ps.executeUpdate();
         }
     }
+    
+    public void update(Product p) throws Exception {
+
+    String sql = "UPDATE products SET name=?, category=?, price=?, quantity=?, min_stock=? WHERE id=?";
+
+    try (Connection con = DBConnection.connect();
+         PreparedStatement ps = con.prepareStatement(sql)) {
+
+        ps.setString(1, p.getName());
+        ps.setString(2, p.getCategory());
+        ps.setDouble(3, p.getPrice());
+        ps.setInt(4, p.getQuantity());
+        ps.setInt(5, p.getMinStock());
+        ps.setString(6, p.getId()); 
+
+        ps.executeUpdate();
+    }
+}
 
     // UPDATE QUANTITY ONLY
     public void updateQuantity(String id, int qty) throws Exception {

@@ -3,6 +3,8 @@ package gui;
 
 import javax.swing.*;
 import java.awt.*;
+import model.Product;
+import model.ProductManager;
 
 public class ManageStockFrame extends JFrame {
 
@@ -17,6 +19,8 @@ public class ManageStockFrame extends JFrame {
 
     private JRadioButton rbAdd;
     private JRadioButton rbReduce;
+    
+    private ProductManager manager = new ProductManager();
 
     public ManageStockFrame() {
 
@@ -26,7 +30,7 @@ public class ManageStockFrame extends JFrame {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setAppIcon("logo.png");
 
-        // 🔥 Background Image
+        //Background Image
         setContentPane(createBackgroundPanel("Background3.jpg"));
         setLayout(new BorderLayout());
 
@@ -104,6 +108,90 @@ public class ManageStockFrame extends JFrame {
 
         add(mainPanel, BorderLayout.CENTER);
         
+        // ================= BUTTON ACTIONS =================
+
+        // SEARCH
+        btnSearch.addActionListener(e -> {
+            try {
+                String id = txtProductID.getText().trim();
+
+                if (id.isEmpty()) {
+                    JOptionPane.showMessageDialog(this,
+                            "Please enter a Product ID to search.",
+                            "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                Product p = manager.searchProduct(id);
+
+                // Fill info panel with found product
+                txtProductName.setText(p.getName());
+                txtCurrentQuantity.setText(String.valueOf(p.getQuantity()));
+
+            } catch (Exception ex) {
+                // Clear info fields if not found
+                txtProductName.setText("");
+                txtCurrentQuantity.setText("");
+                JOptionPane.showMessageDialog(this, ex.getMessage(),
+                        "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        });
+
+        // UPDATE STOCK
+        btnUpdate.addActionListener(e -> {
+            try {
+                String id = txtProductID.getText().trim();
+
+                // Check a product has been searched first
+                if (id.isEmpty() || txtProductName.getText().trim().isEmpty()) {
+                    JOptionPane.showMessageDialog(this,
+                            "Please search for a product first.",
+                            "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                // Check radio button selection
+                if (!rbAdd.isSelected() && !rbReduce.isSelected()) {
+                    JOptionPane.showMessageDialog(this,
+                            "Please select Add Stock or Reduce Stock.",
+                            "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                // Check quantity field
+                if (txtQuantity.getText().trim().isEmpty()) {
+                    JOptionPane.showMessageDialog(this,
+                            "Please enter a quantity.",
+                            "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                int quantity = Integer.parseInt(txtQuantity.getText().trim());
+                boolean isAdding = rbAdd.isSelected();
+
+                manager.updateStock(id, quantity, isAdding);
+                JOptionPane.showMessageDialog(this, "Stock updated successfully!");
+
+                // Refresh current quantity display
+                Product updated = manager.searchProduct(id);
+                txtCurrentQuantity.setText(String.valueOf(updated.getQuantity()));
+
+                // Clear quantity field and radio buttons
+                txtQuantity.setText("");
+                rbAdd.setSelected(false);
+                rbReduce.setSelected(false);
+
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(this,
+                        "Quantity must be a whole number.",
+                        "Error", JOptionPane.ERROR_MESSAGE);
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, ex.getMessage(),
+                        "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        });
+        
+        //Back
         btnBack.addActionListener(e -> {
         dispose();
         new HomeFrame().setVisible(true);

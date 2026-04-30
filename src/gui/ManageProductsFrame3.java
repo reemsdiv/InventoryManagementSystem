@@ -6,12 +6,16 @@ import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import java.awt.*;
+import model.Product;
+import model.ProductManager;
+import java.util.List;
 
 public class ManageProductsFrame3 extends JFrame {
 
     private JTextField txtId, txtName, txtCategory, txtPrice, txtQuantity, txtMinStock;
     private JTable productTable;
     private DefaultTableModel tableModel;
+    ProductManager manager = new ProductManager();
 
     public ManageProductsFrame3() {
 
@@ -43,8 +47,9 @@ public class ManageProductsFrame3 extends JFrame {
         root.setLayout(new BorderLayout(12, 12));
         root.setBorder(BorderFactory.createEmptyBorder(14, 14, 14, 14));
 
-        JPanel form = createFormPanel();
         JPanel tablePanel = createTablePanel();
+        JPanel form = createFormPanel();
+        
 
         JSplitPane split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, form, tablePanel);
         split.setResizeWeight(0.40);
@@ -66,6 +71,7 @@ public class ManageProductsFrame3 extends JFrame {
 
         footer.add(btnBack);
         root.add(footer, BorderLayout.SOUTH);
+        loadTable();
     }
 
     private JPanel createFormPanel() {
@@ -94,7 +100,6 @@ public class ManageProductsFrame3 extends JFrame {
             f.setPreferredSize(new Dimension(240, 30));
         }
 
-        txtId.setEditable(false);
         txtId.setBackground(new Color(245, 245, 245));
 
         addRow(panel, gbc, 0, "Product ID:", txtId, labelFont);
@@ -128,7 +133,97 @@ public class ManageProductsFrame3 extends JFrame {
         gbc.weightx = 1.0;
         gbc.anchor = GridBagConstraints.EAST;
         panel.add(btnPanel, gbc);
+        
+        //Add button implementation
+        btnAdd.addActionListener(e -> {
+            try {
+                manager.addProduct(
+                        txtId.getText().trim(),
+                        txtName.getText().trim(),
+                        txtCategory.getText().trim(),
+                        txtPrice.getText().trim(),
+                        txtQuantity.getText().trim(),
+                        txtMinStock.getText().trim()
+                );
+                JOptionPane.showMessageDialog(this, "Product added successfully!");
+                clearFields();
+                loadTable();
 
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, ex.getMessage(),
+                        "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        });
+        
+        //Delete button
+        btnDelete.addActionListener(e -> {
+            try {
+                String id = txtId.getText().trim();
+
+                if (id.isEmpty()) {
+                    JOptionPane.showMessageDialog(this,
+                            "Please select a product from the table first.",
+                            "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                int confirm = JOptionPane.showConfirmDialog(this,
+                        "Are you sure you want to delete product: " + id + "?",
+                        "Confirm Delete", JOptionPane.YES_NO_OPTION);
+
+                if (confirm == JOptionPane.YES_OPTION) {
+                    manager.deleteProduct(id);
+                    JOptionPane.showMessageDialog(this, "Product deleted successfully!");
+                    clearFields();
+                    loadTable();
+                }
+
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, ex.getMessage(),
+                        "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        });
+
+        
+        //Update button
+        btnUpdate.addActionListener(e -> {
+            try {
+                String id = txtId.getText().trim();
+
+                if (id.isEmpty()) {
+                    JOptionPane.showMessageDialog(this,
+                            "Please select a product from the table first.",
+                            "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                int confirm = JOptionPane.showConfirmDialog(this,
+                        "Are you sure you want to update product: " + id + "?",
+                        "Confirm Update", JOptionPane.YES_NO_OPTION);
+
+                if (confirm == JOptionPane.YES_OPTION) {
+                    manager.updateProduct(
+                            txtId.getText().trim(),
+                            txtName.getText().trim(),
+                            txtCategory.getText().trim(),
+                            txtPrice.getText().trim(),
+                            txtQuantity.getText().trim(),
+                            txtMinStock.getText().trim()
+                    );
+                    JOptionPane.showMessageDialog(this, "Product updated successfully!");
+                    clearFields();
+                    loadTable();
+                }
+
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, ex.getMessage(),
+                        "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        });
+
+        //Clear button
+        btnClear.addActionListener(e -> clearFields());
+        
         gbc.gridx = 0;
         gbc.gridy = 7;
         gbc.gridwidth = 2;
@@ -137,6 +232,16 @@ public class ManageProductsFrame3 extends JFrame {
         panel.add(Box.createVerticalGlue(), gbc);
 
         return panel;
+    }
+    
+    private void clearFields() {
+        txtId.setText("");
+        txtName.setText("");
+        txtCategory.setText("");
+        txtPrice.setText("");
+        txtQuantity.setText("");
+        txtMinStock.setText("");
+        productTable.clearSelection();
     }
 
     private void addRow(JPanel panel, GridBagConstraints gbc, int row,
@@ -160,6 +265,26 @@ public class ManageProductsFrame3 extends JFrame {
         panel.add(field, gbc);
     }
 
+    private void loadTable() {
+        try {
+            tableModel.setRowCount(0);
+            List<Product> products = manager.getAllProducts();
+            for (Product p : products) {
+                tableModel.addRow(new Object[]{
+                    p.getId(),
+                    p.getName(),
+                    p.getCategory(),
+                    p.getPrice(),
+                    p.getQuantity(),
+                    p.getMinStock()
+                });
+            }
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage(),
+                    "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
     private JPanel createTablePanel() {
 
         JPanel panel = new JPanel(new BorderLayout(8, 8));
