@@ -11,24 +11,23 @@ public class NewMain {
       public static void main(String[] args) {
          
         // run database
-        CreateDatabase.createDatabase();
-        CreateProductsTable.createProductsTable();
+//        CreateDatabase.createDatabase();
+//        CreateProductsTable.createProductsTable();
         
-        // run GUI
-//        SwingUtilities.invokeLater(() ->
-//        new LoginFrame().setVisible(true));
-        
-        // run thread
-        ProductManager manager = new ProductManager();
-
-        LowStockMonitorThread monitor =
-                new LowStockMonitorThread(60); // 60 seconds
-
-        monitor.setDaemon(true);
+        // run thread 
+        LowStockMonitorThread monitor = new LowStockMonitorThread(products ->
+            SwingUtilities.invokeLater(() ->
+                JOptionPane.showMessageDialog(
+                    null,
+                    products.size() + " product(s) are low on stock!\nGo to 'View Low Stock' for details.",
+                    "Low Stock Warning",
+                    JOptionPane.WARNING_MESSAGE
+                )
+            )
+        );
         monitor.start();
 
-        javax.swing.SwingUtilities.invokeLater(() -> {
-            new LoginFrame().setVisible(true);
-        });
+        // run GUI
+        SwingUtilities.invokeLater(() -> new LoginFrame().setVisible(true));
     }
 }
