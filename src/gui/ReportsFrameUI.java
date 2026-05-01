@@ -1,17 +1,23 @@
-
-
 package gui;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
+import model.ProductManager;
+import model.ReportGenerator;
+
 public class ReportsFrameUI extends JFrame {
 
     private JList<String> reportList;
     private JTextArea reportDetailsArea;
     private JLabel statusLabel;
-    private JButton generateButton, backButton;
+
+    private JButton generateButton;
+    private JButton saveButton;
+    private JButton backButton;
+
+    private String lastReport = "";
 
     public ReportsFrameUI() {
 
@@ -20,6 +26,8 @@ public class ReportsFrameUI extends JFrame {
         setLocationRelativeTo(null);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setResizable(false);
+        
+        setAppIcon("logo.png");
 
         // ================= Background =================
         ImageIcon bgIcon = new ImageIcon("background3.jpg");
@@ -41,15 +49,13 @@ public class ReportsFrameUI extends JFrame {
         headerPanel.setOpaque(false);
         headerPanel.add(title, BorderLayout.WEST);
 
-        // ================= Left Side (Report List) =================
+        // ================= Report List =================
         reportList = new JList<>(new String[]{
                 "Daily Sales Report",
                 "Stock Report",
                 "Low Stock Report"
         });
 
-        reportList.setFont(new Font("SansSerif", Font.PLAIN, 14));
-        reportList.setSelectedIndex(0);
         reportList.setBackground(new Color(252, 244, 247));
         reportList.setSelectionBackground(new Color(245, 225, 232));
 
@@ -60,9 +66,9 @@ public class ReportsFrameUI extends JFrame {
         leftPanel.setBackground(new Color(252, 244, 247));
         leftPanel.add(leftScroll, BorderLayout.CENTER);
 
-        // ================= Right Side (Report Details) =================
+        // ================= Report Area =================
         reportDetailsArea = new JTextArea();
-        reportDetailsArea.setFont(new Font("SansSerif", Font.PLAIN, 14));
+        reportDetailsArea.setFont(new Font("Monospaced", Font.PLAIN, 13));
         reportDetailsArea.setEditable(false);
         reportDetailsArea.setBackground(new Color(252, 244, 247));
 
@@ -79,47 +85,110 @@ public class ReportsFrameUI extends JFrame {
                 leftPanel,
                 rightPanel
         );
-        splitPane.setResizeWeight(0.30);
+
+        splitPane.setResizeWeight(0.3);
         splitPane.setDividerSize(8);
         splitPane.setBorder(null);
 
-        // ================= Bottom Bar =================
-        statusLabel = new JLabel("Status: Ready");
-        statusLabel.setFont(new Font("SansSerif", Font.PLAIN, 12));
-
+        // ================= Buttons =================
         generateButton = new JButton("Generate");
+        saveButton = new JButton("Export");
         backButton = new JButton("Back");
 
-        generateButton.setFont(new Font("SansSerif", Font.PLAIN, 13));
-        backButton.setFont(new Font("SansSerif", Font.PLAIN, 13));
         generateButton.setFocusPainted(false);
+        saveButton.setFocusPainted(false);
         backButton.setFocusPainted(false);
-        generateButton.setPreferredSize(new Dimension(110, 32));
-        backButton.setPreferredSize(new Dimension(110, 32));
 
-        // Back button action
+        generateButton.setPreferredSize(new Dimension(130, 32));
+        saveButton.setPreferredSize(new Dimension(130, 32));
+        backButton.setPreferredSize(new Dimension(100, 32));
+
+        generateButton.addActionListener(e -> generateReport());
+        saveButton.addActionListener(e -> saveReport());
+
         backButton.addActionListener(e -> {
             dispose();
             new HomeFrame().setVisible(true);
         });
 
-        JPanel buttonRow = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 0));
-        buttonRow.setOpaque(false);
-        buttonRow.add(generateButton);
-        buttonRow.add(backButton);
+        JPanel buttons = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 0));
+        buttons.setOpaque(false); // ✅ FIX
+        buttons.add(generateButton);
+        buttons.add(saveButton);
+        buttons.add(backButton);
 
-        JPanel bottomPanel = new JPanel(new BorderLayout());
-        bottomPanel.setOpaque(false);
-        bottomPanel.add(statusLabel, BorderLayout.WEST);
-        bottomPanel.add(buttonRow, BorderLayout.EAST);
+        // ================= Status =================
+        statusLabel = new JLabel("Status: Ready");
+        statusLabel.setFont(new Font("SansSerif", Font.PLAIN, 12));
+
+        // ================= Bottom Panel =================
+        JPanel bottom = new JPanel(new BorderLayout());
+        bottom.setOpaque(false); // ✅ FIX (removes grey bar)
+        bottom.add(statusLabel, BorderLayout.WEST);
+        bottom.add(buttons, BorderLayout.EAST);
 
         // ================= Add Everything =================
         root.add(headerPanel, BorderLayout.NORTH);
         root.add(splitPane, BorderLayout.CENTER);
-        root.add(bottomPanel, BorderLayout.SOUTH);
+        root.add(bottom, BorderLayout.SOUTH);
 
-        add(root, BorderLayout.CENTER);
+        add(root);
 
         setVisible(true);
+    }
+    
+    // ================= ICON =================
+    private void setAppIcon(String path) {
+        try {
+            ImageIcon icon = new ImageIcon(path);
+            setIconImage(icon.getImage().getScaledInstance(32, 32, Image.SCALE_SMOOTH));
+        } catch (Exception ignored) {}
+    }
+
+    // ================= GENERATE =================
+    private void generateReport() {
+        try {
+            ProductManager pm = new ProductManager();
+            ReportGenerator generator = new ReportGenerator(pm);
+
+            String selected = reportList.getSelectedValue();
+
+            if (selected.equals("Stock Report")) {
+                lastReport = generator.getStockReport();
+            } else if (selected.equals("Low Stock Report")) {
+                lastReport = generator.getLowStockReport();
+            } else {
+                lastReport = generator.getDailySalesReport();
+            }
+
+            reportDetailsArea.setText(lastReport);
+            statusLabel.setText("Status: Generated");
+
+        } catch (Exception e) {
+            reportDetailsArea.setText("Error: " + e.getMessage());
+            statusLabel.setText("Status: Failed");
+        }
+    }
+
+    // ================= SAVE =================
+    private void saveReport() {
+        try {
+            if (lastReport.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Generate report first!");
+                return;
+            }
+
+            ProductManager pm = new ProductManager();
+            ReportGenerator generator = new ReportGenerator(pm);
+
+            String fileName = "Report_" + System.currentTimeMillis() + ".txt";
+
+            generator.saveToFile(lastReport, fileName);
+
+            statusLabel.setText("Saved: " + fileName);
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error saving file");
+        }
     }
 }

@@ -1,185 +1,150 @@
 package model;
 
-import database.ProductDAO;
 import java.io.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-/**
- *
- * @author remys
- */
 public class ReportGenerator {
+
     private ProductManager productManager;
-    private static final DateTimeFormatter FILE_FORMATTER = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");
-    private static final DateTimeFormatter DISPLAY_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-    private ProductDAO productDAO;
+
+    private static final DateTimeFormatter FILE_FORMATTER =
+            DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");
+
+    private static final DateTimeFormatter DISPLAY_FORMATTER =
+            DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     public ReportGenerator(ProductManager productManager) {
         this.productManager = productManager;
     }
-    
-    //Stock Reports
-    public String generateStockReport() throws Exception {
 
-        LocalDateTime timeNow = LocalDateTime.now();
+    // ================= CENTER TEXT =================
+    private String center(String text, int width) {
+        int padding = (width - text.length()) / 2;
+        return " ".repeat(Math.max(0, padding)) + text;
+    }
+
+    private final String LINE = "------------------------------------------------------------";
+
+    // ================= STOCK REPORT =================
+    public String getStockReport() throws Exception {
+
+        StringBuilder sb = new StringBuilder();
+
+        LocalDateTime now = LocalDateTime.now();
         List<Product> products = productManager.getAllProducts();
-        String fileName = "Stock_Report_" + timeNow.format(FILE_FORMATTER) + ".txt";
 
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
+        sb.append(LINE).append("\n");
+        sb.append(center("STOCK REPORT", LINE.length())).append("\n");
+        sb.append(center("Date: " + now.format(DISPLAY_FORMATTER), LINE.length())).append("\n");
+        sb.append(LINE).append("\n\n");
 
-            writer.write("========================================");
-            writer.newLine();
-            writer.write("           STOCK REPORT");
-            writer.newLine();
-            writer.write("Date: " + timeNow.format(DISPLAY_FORMATTER));
-            writer.newLine();
-            writer.write("========================================");
-            writer.newLine();
-            writer.newLine();
+        sb.append(String.format("%-8s %-9s %-12s %-8s %-6s %-6s %-6s\n",
+                "ID", "Name", "Category", "Price", "Qty", "Min", "Status"));
 
-            writer.write(String.format("%-10s %-20s %-15s %-10s %-8s %-10s %-12s",
-                    "ID", "Name", "Category", "Price", "Qty", "Min Stock", "Status"));
-            writer.newLine();
-            writer.write("-----------------------------------------------------------------------");
-            writer.newLine();
+        sb.append(LINE).append("\n");
 
-            for (Product p : products) {
-                writer.write(String.format("%-10s %-20s %-15s %-10.2f %-8d %-10d %-12s",
+        for (Product p : products) {
+            sb.append(String.format("%-8s %-9s %-12s %-8.2f %-6d %-6d %-6s\n",
+                    p.getId(),
+                    p.getName(),
+                    p.getCategory(),
+                    p.getPrice(),
+                    p.getQuantity(),
+                    p.getMinStock(),
+                    productManager.classifyStockStatus(p)));
+        }
+
+        sb.append("\n").append(LINE).append("\n");
+        sb.append("Total Products: ").append(products.size()).append("\n");
+        sb.append(String.format("Total Inventory Value: $%.2f",
+                productManager.calculateTotalInventoryValue())).append("\n");
+        sb.append(LINE);
+
+        return sb.toString();
+    }
+
+    // ================= LOW STOCK REPORT =================
+    public String getLowStockReport() throws Exception {
+
+        StringBuilder sb = new StringBuilder();
+
+        LocalDateTime now = LocalDateTime.now();
+        List<Product> lowStock = productManager.getLowStockProducts();
+
+        sb.append(LINE).append("\n");
+        sb.append(center("LOW STOCK REPORT", LINE.length())).append("\n");
+        sb.append(center("Date: " + now.format(DISPLAY_FORMATTER), LINE.length())).append("\n");
+        sb.append(LINE).append("\n\n");
+
+        sb.append(String.format("%-8s %-9s %-6s %-6s %-6s\n",
+                "ID", "Name", "Qty", "Min", "Status"));
+
+        sb.append(LINE).append("\n");
+
+        if (lowStock.isEmpty()) {
+            sb.append("No low stock products.\n");
+        } else {
+            for (Product p : lowStock) {
+                sb.append(String.format("%-8s %-9s %-6d %-6d %-6s\n",
                         p.getId(),
                         p.getName(),
-                        p.getCategory(),
-                        p.getPrice(),
                         p.getQuantity(),
                         p.getMinStock(),
                         productManager.classifyStockStatus(p)));
-                writer.newLine();
             }
-
-            writer.newLine();
-            writer.write("----------------------------------------");
-            writer.newLine();
-            writer.write(String.format("Total Products       : %d", products.size()));
-            writer.newLine();
-            writer.write(String.format("Total Inventory Value: $%.2f",
-                    productManager.calculateTotalInventoryValue()));
-            writer.newLine();
-            writer.write("========================================");
-            writer.newLine();
-
-        } catch (IOException e) {
-            throw new Exception("Failed to write stock report: " + e.getMessage());
         }
 
-        return fileName;
+        sb.append("\n").append(LINE).append("\n");
+        sb.append("Total Low Stock Products: ").append(lowStock.size()).append("\n");
+        sb.append(LINE);
+
+        return sb.toString();
     }
-    
-    //Low Stock Reports
-    public String generateLowStockReport() throws Exception {
 
-        LocalDateTime timeNow = LocalDateTime.now();
-        List<Product> lowStock = productManager.getLowStockProducts();
-        String fileName = "LowStock_Report_" + timeNow.format(FILE_FORMATTER) + ".txt";
+    // ================= DAILY SALES REPORT =================
+    public String getDailySalesReport() throws Exception {
 
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
+        StringBuilder sb = new StringBuilder();
 
-            writer.write("========================================");
-            writer.newLine();
-            writer.write("         LOW STOCK REPORT");
-            writer.newLine();
-            writer.write("Date: " + timeNow.format(DISPLAY_FORMATTER));
-            writer.newLine();
-            writer.write("========================================");
-            writer.newLine();
-            writer.newLine();
-
-            if (lowStock.isEmpty()) {
-                writer.write("No low stock products found.");
-                writer.newLine();
-            } else {
-                writer.write(String.format("%-10s %-20s %-8s %-10s %-12s",
-                        "ID", "Name", "Qty", "Min Stock", "Status"));
-                writer.newLine();
-                writer.write("----------------------------------------------------");
-                writer.newLine();
-
-                for (Product p : lowStock) {
-                    writer.write(String.format("%-10s %-20s %-8d %-10d %-12s",
-                            p.getId(),
-                            p.getName(),
-                            p.getQuantity(),
-                            p.getMinStock(),
-                            productManager.classifyStockStatus(p)));
-                    writer.newLine();
-                }
-            }
-
-            writer.newLine();
-            writer.write("----------------------------------------");
-            writer.newLine();
-            writer.write(String.format("Total Low Stock Products: %d", lowStock.size()));
-            writer.newLine();
-            writer.write("========================================");
-            writer.newLine();
-
-        } catch (IOException e) {
-            throw new Exception("Failed to write low stock report: " + e.getMessage());
-        }
-
-        return fileName;
-    }
-    
-    //Daily Reports
-    public String generateDailySalesReport() throws Exception {
-
-        LocalDateTime timeNow = LocalDateTime.now();
+        LocalDateTime now = LocalDateTime.now();
         List<Product> products = productManager.getAllProducts();
-        String fileName = "DailySales_Report_" + timeNow.format(FILE_FORMATTER) + ".txt";
 
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
+        sb.append(LINE).append("\n");
+        sb.append(center("DAILY SALES REPORT", LINE.length())).append("\n");
+        sb.append(center("Date: " + now.format(DISPLAY_FORMATTER), LINE.length())).append("\n");
+        sb.append(LINE).append("\n\n");
 
-            writer.write("========================================");
-            writer.newLine();
-            writer.write("       DAILY SALES REPORT");
-            writer.newLine();
-            writer.write("Date: " + timeNow.format(DISPLAY_FORMATTER));
-            writer.newLine();
-            writer.write("========================================");
-            writer.newLine();
-            writer.newLine();
+        sb.append(String.format("%-8s %-9s %-8s %-12s\n",
+                "ID", "Name", "Price", "Total"));
 
-            writer.write(String.format("%-10s %-20s %-10s %-12s",
-                    "ID", "Name", "Price", "Total Value"));
-            writer.newLine();
-            writer.write("----------------------------------------------------");
-            writer.newLine();
+        sb.append(LINE).append("\n");
 
-            for (Product p : products) {
-                writer.write(String.format("%-10s %-20s %-10.2f %-12.2f",
-                        p.getId(),
-                        p.getName(),
-                        p.getPrice(),
-                        p.getPrice() * p.getQuantity()));
-                writer.newLine();
-            }
-
-            writer.newLine();
-            writer.write("----------------------------------------");
-            writer.newLine();
-            writer.write(String.format("Total Products       : %d", products.size()));
-            writer.newLine();
-            writer.write(String.format("Total Inventory Value: $%.2f",
-                    productManager.calculateTotalInventoryValue()));
-            writer.newLine();
-            writer.write("========================================");
-            writer.newLine();
-
-        } catch (IOException e) {
-            throw new Exception("Failed to write daily sales report: " + e.getMessage());
+        for (Product p : products) {
+            sb.append(String.format("%-8s %-9s %-8.2f %-12.2f\n",
+                    p.getId(),
+                    p.getName(),
+                    p.getPrice(),
+                    p.getPrice() * p.getQuantity()));
         }
 
-        return fileName;
+        sb.append("\n").append(LINE).append("\n");
+        sb.append("Total Products: ").append(products.size()).append("\n");
+        sb.append(String.format("Total Inventory Value: $%.2f",
+                productManager.calculateTotalInventoryValue())).append("\n");
+        sb.append(LINE);
+
+        return sb.toString();
     }
-    
+
+    // ================= SAVE TO FILE =================
+    public void saveToFile(String content, String fileName) throws Exception {
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
+            writer.write(content);
+        } catch (IOException e) {
+            throw new Exception("Error saving file: " + e.getMessage());
+        }
+    }
 }
