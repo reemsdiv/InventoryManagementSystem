@@ -6,10 +6,6 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import model.ProductManager;
 
-/** 
- * 
- * @author Jory 
- */
 public class LowStockMonitorThread extends Thread {
  
     private final LowStockListener listener;
@@ -27,7 +23,7 @@ public class LowStockMonitorThread extends Thread {
     @Override
     public void run() {
         try {
-            Thread.sleep(2000);
+            Thread.sleep(1000);
  
             ProductManager pm = new ProductManager();
             List<Product> lowStock = pm.getLowStockProducts();

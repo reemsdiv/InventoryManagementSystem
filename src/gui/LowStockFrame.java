@@ -8,6 +8,11 @@ import javax.swing.table.*;
 import java.awt.*;
 import java.util.List;
 
+
+
+// This class displays low stock products in a table 
+
+
 public class LowStockFrame extends JFrame {
 
     private JTable productTable;
@@ -21,7 +26,7 @@ public class LowStockFrame extends JFrame {
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setResizable(false);
 
-        // Background
+        
         ImageIcon bgIcon = new ImageIcon("background3.jpg");
         Image bgImage = bgIcon.getImage().getScaledInstance(950, 600, Image.SCALE_SMOOTH);
         JLabel background = new JLabel(new ImageIcon(bgImage));
@@ -32,7 +37,7 @@ public class LowStockFrame extends JFrame {
         root.setBorder(new EmptyBorder(25, 30, 25, 30));
         root.setOpaque(false);
 
-        // ===== HEADER =====
+        
         JLabel title = new JLabel("Low Stock Products");
         title.setFont(new Font("SansSerif", Font.BOLD, 18));
 
@@ -40,7 +45,7 @@ public class LowStockFrame extends JFrame {
         headerPanel.setOpaque(false);
         headerPanel.add(title, BorderLayout.WEST);
 
-        // ===== TABLE =====
+        
         DefaultTableModel model = new DefaultTableModel(
                 new Object[]{"Product ID", "Name", "Category", "Quantity", "Min Level"}, 0
         ) {
@@ -67,7 +72,7 @@ public class LowStockFrame extends JFrame {
         scrollPane.getViewport().setBackground(new Color(252, 244, 247));
         scrollPane.setBorder(BorderFactory.createLineBorder(new Color(220, 210, 215)));
 
-        // ===== BOTTOM =====
+   
         statusLabel = new JLabel("Status: Ready");
         statusLabel.setFont(new Font("SansSerif", Font.PLAIN, 12));
 
@@ -97,7 +102,7 @@ public class LowStockFrame extends JFrame {
         bottomPanel.add(statusLabel, BorderLayout.WEST);
         bottomPanel.add(buttonRow, BorderLayout.EAST);
 
-        // ===== ASSEMBLE =====
+    
         root.add(headerPanel, BorderLayout.NORTH);
         root.add(scrollPane, BorderLayout.CENTER);
         root.add(bottomPanel, BorderLayout.SOUTH);
@@ -107,7 +112,8 @@ public class LowStockFrame extends JFrame {
         loadLowStock();
         setVisible(true);
     }
-
+    
+    // Loads low stock products from the database and displays them in the table
     private void loadLowStock() {
         try {
             ProductDAO dao = new ProductDAO();

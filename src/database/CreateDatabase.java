@@ -9,7 +9,7 @@ public class CreateDatabase {
           
         try {
             String url = "jdbc:mysql://localhost:3306";
-            Connection conn = DriverManager.getConnection(url, "root", "root");
+            Connection conn = DriverManager.getConnection(url, "root", "reemwa");
 
             Statement stmt = conn.createStatement();
 

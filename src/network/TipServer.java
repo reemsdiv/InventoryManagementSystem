@@ -1,18 +1,14 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
- */
+
 package network;
 
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class TipServer {
+// A socket-based server that accepts client connections and delivers predefined inventory tips
 
-    /**
-     * @param args the command line arguments
-     */
+public class TipServer {
+    
     public static void main(String[] args) {
         try {
             ServerSocket server = new ServerSocket(5000);
@@ -39,8 +35,6 @@ public class TipServer {
 
         } catch (Exception e) {
             e.printStackTrace();
-        }
-        
-    }
-    
+        }  
+    }   
 }

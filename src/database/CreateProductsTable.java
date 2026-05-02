@@ -9,7 +9,7 @@ public class CreateProductsTable {
             
         try {
             String url = "jdbc:mysql://localhost:3306/inventory_db";
-            Connection conn = DriverManager.getConnection(url, "root", "root");
+            Connection conn = DriverManager.getConnection(url, "root", "reemwa");
 
             Statement stmt = conn.createStatement();
 

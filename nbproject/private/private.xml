@@ -3,13 +3,21 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/remys/OneDrive%20-%20King%20Abdullaziz%20University/IT%20docs/level%208/CPIT-305/cpit-305%20project/InventoryManagementSystem/src/database/DBConnection.java</file>
-            <file>file:/C:/Users/remys/OneDrive%20-%20King%20Abdullaziz%20University/IT%20docs/level%208/CPIT-305/cpit-305%20project/InventoryManagementSystem/src/database/ProductDAO.java</file>
-            <file>file:/C:/Users/remys/OneDrive%20-%20King%20Abdullaziz%20University/IT%20docs/level%208/CPIT-305/cpit-305%20project/InventoryManagementSystem/src/model/Product.java</file>
-            <file>file:/C:/Users/remys/OneDrive%20-%20King%20Abdullaziz%20University/IT%20docs/level%208/CPIT-305/cpit-305%20project/InventoryManagementSystem/src/model/productManager.java</file>
-            <file>file:/C:/Users/remys/OneDrive%20-%20King%20Abdullaziz%20University/IT%20docs/level%208/CPIT-305/cpit-305%20project/InventoryManagementSystem/src/gui/HomeFrame.java</file>
-            <file>file:/C:/Users/remys/OneDrive%20-%20King%20Abdullaziz%20University/IT%20docs/level%208/CPIT-305/cpit-305%20project/InventoryManagementSystem/src/database/CreateDatabase.java</file>
-            <file>file:/C:/Users/remys/OneDrive%20-%20King%20Abdullaziz%20University/IT%20docs/level%208/CPIT-305/cpit-305%20project/InventoryManagementSystem/src/database/CreateProductsTable.java</file>
+            <file>file:/C:/Users/User/Downloads/InventoryManagement%20(2)/InventoryManagement/src/gui/NewMain.java</file>
+            <file>file:/C:/Users/User/Downloads/InventoryManagement%20(2)/InventoryManagement/src/database/CreateDatabase.java</file>
+            <file>file:/C:/Users/User/Downloads/InventoryManagement%20(2)/InventoryManagement/src/database/CreateProductsTable.java</file>
+            <file>file:/C:/Users/User/Downloads/InventoryManagement%20(2)/InventoryManagement/src/database/DBConnection.java</file>
+            <file>file:/C:/Users/User/Downloads/InventoryManagement%20(2)/InventoryManagement/src/database/ProductDAO.java</file>
+            <file>file:/C:/Users/User/Downloads/InventoryManagement%20(2)/InventoryManagement/src/gui/ReportsFrameUI.java</file>
+            <file>file:/C:/Users/User/Downloads/InventoryManagement%20(2)/InventoryManagement/src/gui/TipsFrame.java</file>
+            <file>file:/C:/Users/User/Downloads/InventoryManagement%20(2)/InventoryManagement/src/gui/HomeFrame.java</file>
+            <file>file:/C:/Users/User/Downloads/InventoryManagement%20(2)/InventoryManagement/src/gui/ManageStockFrame.java</file>
+            <file>file:/C:/Users/User/Downloads/InventoryManagement%20(2)/InventoryManagement/src/gui/ManageProductsFrame3.java</file>
+            <file>file:/C:/Users/User/Downloads/InventoryManagement%20(2)/InventoryManagement/src/network/TipServer.java</file>
+            <file>file:/C:/Users/User/Downloads/InventoryManagement%20(2)/InventoryManagement/src/network/TipClient.java</file>
+            <file>file:/C:/Users/User/Downloads/InventoryManagement%20(2)/InventoryManagement/src/model/ReportGenerator.java</file>
+            <file>file:/C:/Users/User/Downloads/InventoryManagement%20(2)/InventoryManagement/src/model/ProductManager.java</file>
+            <file>file:/C:/Users/User/Downloads/InventoryManagement%20(2)/InventoryManagement/src/model/Product.java</file>
         </group>
     </open-files>
 </project-private>

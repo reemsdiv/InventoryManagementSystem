@@ -3,8 +3,12 @@ package gui;
 import javax.swing.*;
 import java.awt.*;
 import javax.swing.border.Border;
+import model.ProductManager;
+import thread.LowStockMonitorThread;
 
 public class HomeFrame extends JFrame {
+    
+private static boolean alertShown = false;
 
     public HomeFrame() {
 
@@ -88,7 +92,7 @@ public class HomeFrame extends JFrame {
 
         add(centerPanel, BorderLayout.CENTER);
 
-        //logout button (same style)
+        //logout button 
         JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 15, 15));
 
         JButton btnLogout = createButton("Log Out", "logout.png",
@@ -121,7 +125,24 @@ public class HomeFrame extends JFrame {
         bottomPanel.setOpaque(false);
 
         setVisible(true);
-    }
+        
+        // Starts a background thread to monitor low stock products and display a warning message in the UI
+       if (!alertShown) {
+        LowStockMonitorThread monitor = new LowStockMonitorThread(products ->
+        SwingUtilities.invokeLater(() -> {
+            JOptionPane.showMessageDialog(
+                this,
+                products.size() + " product(s) are low on stock!\nGo to 'View Low Stock' for details.",
+                "Low Stock Warning",
+                JOptionPane.WARNING_MESSAGE
+            );
+            alertShown = true; 
+        })
+    );
+    monitor.start();
+}
+
+}
 
     private JButton createButton(String text, String iconPath, Font font, Border border) {
 

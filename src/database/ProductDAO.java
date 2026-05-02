@@ -7,7 +7,7 @@ import java.util.List;
 
 public class ProductDAO {
 
-    // ADD PRODUCT
+    // Add product
     public void add(Product p) throws Exception {
         String sql = "INSERT INTO products VALUES (?,?,?,?,?,?)";
         try (Connection con = DBConnection.connect();
@@ -22,7 +22,7 @@ public class ProductDAO {
         }
     }
 
-    // GET ALL PRODUCTS
+    // Get all products 
     public List<Product> getAll() throws Exception {
         List<Product> list = new ArrayList<>();
         String sql = "SELECT * FROM products";
@@ -43,7 +43,7 @@ public class ProductDAO {
         return list;
     }
 
-    // SEARCH PRODUCT BY ID
+    // Search product by ID
     public Product search(String id) throws Exception {
         String sql = "SELECT * FROM products WHERE id=?";
         try (Connection con = DBConnection.connect();
@@ -65,7 +65,7 @@ public class ProductDAO {
         return null;
     }
 
-    // DELETE PRODUCT
+    // Delete product
     public void delete(String id) throws Exception {
         String sql = "DELETE FROM products WHERE id=?";
         try (Connection con = DBConnection.connect();
@@ -75,7 +75,7 @@ public class ProductDAO {
         }
     }
 
-    // UPDATE PRODUCT
+    // Update product
     public void update(Product p) throws Exception {
         String sql = "UPDATE products SET name=?, category=?, price=?, quantity=?, min_stock=? WHERE id=?";
         try (Connection con = DBConnection.connect();
@@ -90,7 +90,7 @@ public class ProductDAO {
         }
     }
 
-    // UPDATE QUANTITY ONLY
+    // Update quantity only
     public void updateQuantity(String id, int qty) throws Exception {
         String sql = "UPDATE products SET quantity=? WHERE id=?";
         try (Connection con = DBConnection.connect();
@@ -101,7 +101,7 @@ public class ProductDAO {
         }
     }
 
-    // LOW STOCK PRODUCTS
+    // Low stock product
     public List<Product> getLowStock() throws Exception {
         List<Product> list = new ArrayList<>();
         String sql = "SELECT * FROM products WHERE quantity <= min_stock";

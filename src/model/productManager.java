@@ -3,10 +3,9 @@ package model;
 import database.ProductDAO;
 import java.util.List;
 
-/**
- *
- * @author remys
- */
+
+// Handles business logic for managing products, including validation and interaction with the database
+
 public class ProductManager {
     private ProductDAO productDAO;
 

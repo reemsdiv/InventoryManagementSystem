@@ -5,6 +5,11 @@ package gui;
 import javax.swing.*;
 import java.awt.*;
 
+
+
+// This class represents the login interface, allowing users to enter username and password
+// and access the main application (HomeFrame)
+
 public class LoginFrame extends JFrame {
 
     private String BG_IMAGE = "background3.jpg";
@@ -22,7 +27,7 @@ public class LoginFrame extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
-        // ===== Nimbus Look =====
+  
         try {
             for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
@@ -36,7 +41,7 @@ public class LoginFrame extends JFrame {
     }
 
     private void initUI() {
-        // ===== Background =====
+        
         JLabel background = new JLabel(
                 new ImageIcon(new ImageIcon(BG_IMAGE)
                         .getImage().getScaledInstance(750, 600, Image.SCALE_SMOOTH))
@@ -44,12 +49,12 @@ public class LoginFrame extends JFrame {
         background.setLayout(new GridBagLayout());
         setContentPane(background);
 
-        // ===== Main Box (Logo + Card) =====
+     
         JPanel mainBox = new JPanel();
         mainBox.setOpaque(false);
         mainBox.setLayout(new BoxLayout(mainBox, BoxLayout.Y_AXIS));
 
-        // ===== Logo =====
+         
         setAppIcon(LOGO_IMAGE);
         JLabel logoLabel = new JLabel(
                 new ImageIcon(new ImageIcon(LOGO_IMAGE)
@@ -60,7 +65,7 @@ public class LoginFrame extends JFrame {
         mainBox.add(logoLabel);
         mainBox.add(Box.createVerticalStrut(25));
 
-        // ===== Card with Shadow =====
+   
         JPanel card = new JPanel(new GridBagLayout()) {
             @Override
             protected void paintComponent(Graphics g) {
@@ -71,14 +76,14 @@ public class LoginFrame extends JFrame {
                 int shadowSize = 12;
                 int arc = 25;
 
-                // Shadow
+             
                 g2.setColor(new Color(0, 0, 0, 60));
                 g2.fillRoundRect(shadowSize, shadowSize,
                         getWidth() - shadowSize,
                         getHeight() - shadowSize,
                         arc, arc);
 
-                // Card background
+     
                 g2.setColor(new Color(252, 244, 247));
                 g2.fillRoundRect(0, 0,
                         getWidth() - shadowSize,
@@ -99,13 +104,13 @@ public class LoginFrame extends JFrame {
         gbc.insets = new Insets(6, 0, 12, 0);
         gbc.weightx = 1;
 
-        // ===== Title =====
+    
         JLabel title = new JLabel("User Login", SwingConstants.CENTER);
         title.setFont(new Font("Segoe UI", Font.BOLD, 16));
         gbc.gridy = 0;
         card.add(title, gbc);
 
-        // Username
+        
         JLabel userLabel = new JLabel("Username");
         userLabel.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         gbc.gridy = 1;
@@ -115,7 +120,7 @@ public class LoginFrame extends JFrame {
         gbc.gridy = 2;
         card.add(usernameField, gbc);
 
-        // Password
+  
         JLabel passLabel = new JLabel("Password");
         passLabel.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         gbc.gridy = 3;
@@ -125,21 +130,20 @@ public class LoginFrame extends JFrame {
         gbc.gridy = 4;
         card.add(passwordField, gbc);
 
-        // Error label
+
         errorLabel = new JLabel(" ");
         errorLabel.setForeground(new Color(176, 0, 32));
         errorLabel.setFont(new Font("Segoe UI", Font.PLAIN, 12));
         gbc.gridy = 5;
         card.add(errorLabel, gbc);
 
-        // Buttons
+        
         JPanel btnPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 15, 0));
         btnPanel.setOpaque(false);
 
         loginButton = new JButton("Login");
         exitButton = new JButton("Exit");
-
-        // ===== Apply styleButton same as ManageProductsFrame3 =====
+        
         styleButton(loginButton);
         styleButton(exitButton);
 
@@ -152,7 +156,7 @@ public class LoginFrame extends JFrame {
         mainBox.add(card);
         background.add(mainBox);
 
-        // ===== Events =====
+   
         loginButton.addActionListener(e -> {
             String username = usernameField.getText();
             String password = new String(passwordField.getPassword());

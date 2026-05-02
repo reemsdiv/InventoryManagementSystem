@@ -10,6 +10,9 @@ import model.Product;
 import model.ProductManager;
 import java.util.List;
 
+
+// This class provides a GUI for managing products, allowing users to add, update, delete, and view product data
+
 public class ManageProductsFrame3 extends JFrame {
 
     private JTextField txtId, txtName, txtCategory, txtPrice, txtQuantity, txtMinStock;
@@ -27,8 +30,7 @@ public class ManageProductsFrame3 extends JFrame {
 
         setContentPane(new BackgroundPanel("Background3.jpg"));
         setLayout(new BorderLayout());
-
-        // Nimbus look
+        
         try {
             for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
@@ -133,8 +135,7 @@ public class ManageProductsFrame3 extends JFrame {
         gbc.weightx = 1.0;
         gbc.anchor = GridBagConstraints.EAST;
         panel.add(btnPanel, gbc);
-        
-        //Add button implementation
+      
         btnAdd.addActionListener(e -> {
             try {
                 manager.addProduct(
@@ -184,8 +185,7 @@ public class ManageProductsFrame3 extends JFrame {
             }
         });
 
-        
-        //Update button
+       
         btnUpdate.addActionListener(e -> {
             try {
                 String id = txtId.getText().trim();
@@ -221,7 +221,7 @@ public class ManageProductsFrame3 extends JFrame {
             }
         });
 
-        //Clear button
+       
         btnClear.addActionListener(e -> clearFields());
         
         gbc.gridx = 0;

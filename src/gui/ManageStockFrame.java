@@ -30,7 +30,6 @@ public class ManageStockFrame extends JFrame {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setAppIcon("logo.png");
 
-        //Background Image
         setContentPane(createBackgroundPanel("Background3.jpg"));
         setLayout(new BorderLayout());
 
@@ -39,7 +38,6 @@ public class ManageStockFrame extends JFrame {
         mainPanel.setBorder(BorderFactory.createEmptyBorder(15, 20, 15, 20));
         mainPanel.setOpaque(false);
 
-        // ================= Search Panel =================
         JPanel searchPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         searchPanel.setBorder(BorderFactory.createTitledBorder("Search Product"));
         searchPanel.setOpaque(false);
@@ -51,7 +49,6 @@ public class ManageStockFrame extends JFrame {
         btnSearch = new JButton("Search");
         searchPanel.add(btnSearch);
 
-        // ================= Info Panel =================
         JPanel infoPanel = new JPanel(new GridLayout(2, 2, 10, 10));
         infoPanel.setBorder(BorderFactory.createTitledBorder("Current Stock Information"));
         infoPanel.setOpaque(false);
@@ -66,7 +63,6 @@ public class ManageStockFrame extends JFrame {
         txtCurrentQuantity.setEditable(false);
         infoPanel.add(txtCurrentQuantity);
 
-        // ================= Adjust Panel =================
         JPanel adjustPanel = new JPanel(new GridLayout(3, 2, 10, 10));
         adjustPanel.setBorder(BorderFactory.createTitledBorder("Adjust Stock"));
         adjustPanel.setOpaque(false);
@@ -88,7 +84,6 @@ public class ManageStockFrame extends JFrame {
         adjustPanel.add(rbAdd);
         adjustPanel.add(rbReduce);
 
-        // ================= Bottom Buttons =================
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         buttonPanel.setOpaque(false);
 
@@ -107,10 +102,7 @@ public class ManageStockFrame extends JFrame {
         mainPanel.add(buttonPanel);
 
         add(mainPanel, BorderLayout.CENTER);
-        
-        // ================= BUTTON ACTIONS =================
-
-        // SEARCH
+       
         btnSearch.addActionListener(e -> {
             try {
                 String id = txtProductID.getText().trim();
@@ -124,12 +116,10 @@ public class ManageStockFrame extends JFrame {
 
                 Product p = manager.searchProduct(id);
 
-                // Fill info panel with found product
                 txtProductName.setText(p.getName());
                 txtCurrentQuantity.setText(String.valueOf(p.getQuantity()));
 
             } catch (Exception ex) {
-                // Clear info fields if not found
                 txtProductName.setText("");
                 txtCurrentQuantity.setText("");
                 JOptionPane.showMessageDialog(this, ex.getMessage(),
@@ -137,20 +127,18 @@ public class ManageStockFrame extends JFrame {
             }
         });
 
-        // UPDATE STOCK
+        
         btnUpdate.addActionListener(e -> {
             try {
                 String id = txtProductID.getText().trim();
-
-                // Check a product has been searched first
+   
                 if (id.isEmpty() || txtProductName.getText().trim().isEmpty()) {
                     JOptionPane.showMessageDialog(this,
                             "Please search for a product first.",
                             "Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
-
-                // Check radio button selection
+                
                 if (!rbAdd.isSelected() && !rbReduce.isSelected()) {
                     JOptionPane.showMessageDialog(this,
                             "Please select Add Stock or Reduce Stock.",
@@ -158,7 +146,6 @@ public class ManageStockFrame extends JFrame {
                     return;
                 }
 
-                // Check quantity field
                 if (txtQuantity.getText().trim().isEmpty()) {
                     JOptionPane.showMessageDialog(this,
                             "Please enter a quantity.",
@@ -172,11 +159,11 @@ public class ManageStockFrame extends JFrame {
                 manager.updateStock(id, quantity, isAdding);
                 JOptionPane.showMessageDialog(this, "Stock updated successfully!");
 
-                // Refresh current quantity display
+                
                 Product updated = manager.searchProduct(id);
                 txtCurrentQuantity.setText(String.valueOf(updated.getQuantity()));
 
-                // Clear quantity field and radio buttons
+               
                 txtQuantity.setText("");
                 rbAdd.setSelected(false);
                 rbReduce.setSelected(false);
@@ -191,7 +178,6 @@ public class ManageStockFrame extends JFrame {
             }
         });
         
-        //Back
         btnBack.addActionListener(e -> {
         dispose();
         new HomeFrame().setVisible(true);
@@ -200,11 +186,9 @@ public class ManageStockFrame extends JFrame {
         setVisible(true);
     }
 
-    
     private JPanel createBackgroundPanel(String path) {
 
-        Image bgImage = new ImageIcon(path).getImage();  // safer for local image
-
+        Image bgImage = new ImageIcon(path).getImage();  
         return new JPanel(new BorderLayout()) {
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
