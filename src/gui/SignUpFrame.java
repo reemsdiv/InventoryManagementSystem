@@ -4,26 +4,21 @@ import database.UserDAO;
 import javax.swing.*;
 import java.awt.*;
 
-/**
- * Login screen.
- * - Authenticates against the users table (SHA-256 hashed passwords).
- * - "Sign Up" link opens SignUpFrame.
- * Default account: username=admin  password=1234
- */
-public class LoginFrame extends JFrame {
+public class SignUpFrame extends JFrame {
 
-    private final String BG_IMAGE   = "background3.jpg";
+    private final String BG_IMAGE = "background3.jpg";
     private final String LOGO_IMAGE = "logo.png";
 
-    private JTextField     usernameField;
+    private JTextField usernameField;
     private JPasswordField passwordField;
-    private JButton        loginButton;
-    private JButton        exitButton;
-    private JLabel         errorLabel;
+    private JPasswordField confirmField;
+    private JButton signUpButton;
+    private JButton backButton;
+    private JLabel errorLabel;
 
-    public LoginFrame() {
-        setTitle("Login");
-        setSize(750, 600);
+    public SignUpFrame() {
+        setTitle("Sign Up");
+        setSize(750, 650);        
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
@@ -41,15 +36,15 @@ public class LoginFrame extends JFrame {
 
     private void initUI() {
 
-        // ── Background ────────────────────────────────────────────────
+        //Background
         JLabel background = new JLabel(
                 new ImageIcon(new ImageIcon(BG_IMAGE)
-                        .getImage().getScaledInstance(750, 600, Image.SCALE_SMOOTH))
+                        .getImage().getScaledInstance(750, 650, Image.SCALE_SMOOTH))
         );
         background.setLayout(new GridBagLayout());
         setContentPane(background);
 
-        // ── Outer column ──────────────────────────────────────────────
+        //Outer column (logo + card)
         JPanel mainBox = new JPanel();
         mainBox.setOpaque(false);
         mainBox.setLayout(new BoxLayout(mainBox, BoxLayout.Y_AXIS));
@@ -62,9 +57,9 @@ public class LoginFrame extends JFrame {
         logoLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         mainBox.add(logoLabel);
-        mainBox.add(Box.createVerticalStrut(25));
+        mainBox.add(Box.createVerticalStrut(20));
 
-        // ── Card ──────────────────────────────────────────────────────
+        //Card
         JPanel card = new JPanel(new GridBagLayout()) {
             @Override
             protected void paintComponent(Graphics g) {
@@ -85,22 +80,22 @@ public class LoginFrame extends JFrame {
 
         card.setOpaque(false);
         card.setBorder(BorderFactory.createEmptyBorder(30, 40, 30, 40));
-        card.setMaximumSize(new Dimension(430, 380));
+        card.setMaximumSize(new Dimension(430, 440));
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.fill    = GridBagConstraints.HORIZONTAL;
-        gbc.insets  = new Insets(6, 0, 12, 0);
+        gbc.insets  = new Insets(6, 0, 10, 0);
         gbc.weightx = 1;
 
-        // Title
-        JLabel title = new JLabel("User Login", SwingConstants.CENTER);
+        //Title
+        JLabel title = new JLabel("Create Account", SwingConstants.CENTER);
         title.setFont(new Font("Segoe UI", Font.BOLD, 16));
         gbc.gridy = 0;
         card.add(title, gbc);
 
-        // Username
+        //Username 
         JLabel userLabel = new JLabel("Username");
-        userLabel.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        userLabel.setFont(new Font("Segoe UI", Font.PLAIN, 13));
         gbc.gridy = 1;
         card.add(userLabel, gbc);
 
@@ -108,9 +103,9 @@ public class LoginFrame extends JFrame {
         gbc.gridy = 2;
         card.add(usernameField, gbc);
 
-        // Password
+        //Password 
         JLabel passLabel = new JLabel("Password");
-        passLabel.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        passLabel.setFont(new Font("Segoe UI", Font.PLAIN, 13));
         gbc.gridy = 3;
         card.add(passLabel, gbc);
 
@@ -118,98 +113,99 @@ public class LoginFrame extends JFrame {
         gbc.gridy = 4;
         card.add(passwordField, gbc);
 
-        // Error label
+        //Confirm Password
+        JLabel confirmLabel = new JLabel("Confirm Password");
+        confirmLabel.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+        gbc.gridy = 5;
+        card.add(confirmLabel, gbc);
+
+        confirmField = new JPasswordField();
+        gbc.gridy = 6;
+        card.add(confirmField, gbc);
+
+        //Error label
         errorLabel = new JLabel(" ");
         errorLabel.setForeground(new Color(176, 0, 32));
         errorLabel.setFont(new Font("Segoe UI", Font.PLAIN, 12));
-        gbc.gridy = 5;
+        gbc.gridy = 7;
         card.add(errorLabel, gbc);
 
-        // Login / Exit buttons
+        //Buttons
         JPanel btnPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 15, 0));
         btnPanel.setOpaque(false);
 
-        loginButton = new JButton("Login");
-        exitButton  = new JButton("Exit");
+        signUpButton = new JButton("Sign Up");
+        backButton   = new JButton("Back");
 
-        styleButton(loginButton);
-        styleButton(exitButton);
+        styleButton(signUpButton);
+        styleButton(backButton);
 
-        btnPanel.add(loginButton);
-        btnPanel.add(exitButton);
+        btnPanel.add(signUpButton);
+        btnPanel.add(backButton);
 
-        gbc.gridy = 6;
+        gbc.gridy = 8;
         card.add(btnPanel, gbc);
-
-        // "Don't have an account? Sign Up" link
-        JPanel signUpRow = new JPanel(new FlowLayout(FlowLayout.CENTER, 4, 0));
-        signUpRow.setOpaque(false);
-
-        JLabel noAccountLabel = new JLabel("Don't have an account?");
-        noAccountLabel.setFont(new Font("Segoe UI", Font.PLAIN, 12));
-
-        JButton signUpLink = new JButton("Sign Up");
-        signUpLink.setFont(new Font("Segoe UI", Font.BOLD, 12));
-        signUpLink.setBorderPainted(false);
-        signUpLink.setContentAreaFilled(false);
-        signUpLink.setForeground(new Color(100, 60, 120));
-        signUpLink.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        signUpLink.setFocusPainted(false);
-        signUpLink.setMargin(new Insets(0, 0, 0, 0));
-
-        signUpRow.add(noAccountLabel);
-        signUpRow.add(signUpLink);
-
-        gbc.gridy  = 7;
-        gbc.insets = new Insets(2, 0, 0, 0);
-        card.add(signUpRow, gbc);
 
         mainBox.add(card);
         background.add(mainBox);
 
-        // ── Action listeners ──────────────────────────────────────────
-        loginButton.addActionListener(e -> handleLogin());
-        passwordField.addActionListener(e -> handleLogin());   // Enter key
+        //Action listeners
+        signUpButton.addActionListener(e -> handleSignUp());
 
-        exitButton.addActionListener(e -> System.exit(0));
-
-        signUpLink.addActionListener(e -> {
-            new SignUpFrame().setVisible(true);
+        backButton.addActionListener(e -> {
+            new LoginFrame().setVisible(true);
             dispose();
         });
+
+        //Allow Enter key to submit
+        confirmField.addActionListener(e -> handleSignUp());
     }
 
-    // ------------------------------------------------------------------
-    //  Login logic
-    // ------------------------------------------------------------------
-
-    private void handleLogin() {
+    // Sign up logic
+    private void handleSignUp() {
         String username = usernameField.getText().trim();
         String password = new String(passwordField.getPassword());
+        String confirm  = new String(confirmField.getPassword());
 
-        if (username.isBlank() || password.isBlank()) {
-            errorLabel.setText("Please enter username and password.");
+        //Basic field validation
+        if (username.isEmpty() || password.isEmpty()) {
+            errorLabel.setText("Username and password cannot be empty.");
             return;
         }
 
+        //Passwords must match
+        if (!password.equals(confirm)) {
+            errorLabel.setText("Passwords do not match.");
+            return;
+        }
+
+        //Check uniqueness + register
         try {
             UserDAO dao = new UserDAO();
-            if (dao.login(username, password)) {
-                new HomeFrame().setVisible(true);
-                dispose();
-            } else {
-                errorLabel.setText("Invalid username or password.");
+
+            if (dao.usernameExists(username)) {
+                errorLabel.setText("Username is already taken.");
+                return;
             }
+
+            dao.register(username, password);
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Account created successfully!",
+                    "Sign Up Successful",
+                    JOptionPane.INFORMATION_MESSAGE
+            );
+
+            new HomeFrame().setVisible(true);
+            dispose();
+
         } catch (Exception ex) {
-            errorLabel.setText("Connection error. Please try again.");
-            ex.printStackTrace();
+            errorLabel.setText("Error: " + ex.getMessage());
         }
     }
 
-    // ------------------------------------------------------------------
-    //  Helpers
-    // ------------------------------------------------------------------
-
+    //Helpers
     private void styleButton(JButton b) {
         b.setFont(new Font("Segoe UI", Font.PLAIN, 13));
         b.setPreferredSize(new Dimension(110, 28));
