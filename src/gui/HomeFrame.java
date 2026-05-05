@@ -126,23 +126,24 @@ private static boolean alertShown = false;
 
         setVisible(true);
         
-        // Starts a background thread to monitor low stock products and display a warning message in the UI
-       if (!alertShown) {
-        LowStockMonitorThread monitor = new LowStockMonitorThread(products ->
-        SwingUtilities.invokeLater(() -> {
-            JOptionPane.showMessageDialog(
-                this,
-                products.size() + " product(s) are low on stock!\nGo to 'View Low Stock' for details.",
-                "Low Stock Warning",
-                JOptionPane.WARNING_MESSAGE
+        //Starts a background thread to monitor low stock products and display a warning message
+        if (!alertShown) {
+            LowStockMonitorThread monitor = new LowStockMonitorThread(products ->
+                SwingUtilities.invokeLater(() -> {
+                    JOptionPane.showMessageDialog(
+                        this,
+                        products.size() + " product(s) are low on stock!\nGo to 'View Low Stock' for details.",
+                        "Low Stock Warning",
+                        JOptionPane.WARNING_MESSAGE
+                    );
+                })
             );
-            alertShown = true; 
-        })
-    );
-    monitor.start();
-}
-
-}
+            
+            monitor.start();
+           
+            alertShown = true; // Mark as started so we don't launch multiple threads
+        }
+    }
 
     private JButton createButton(String text, String iconPath, Font font, Border border) {
 
