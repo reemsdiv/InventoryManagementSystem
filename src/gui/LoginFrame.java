@@ -4,12 +4,6 @@ import database.UserDAO;
 import javax.swing.*;
 import java.awt.*;
 
-/**
- * Login screen.
- * - Authenticates against the users table (SHA-256 hashed passwords).
- * - "Sign Up" link opens SignUpFrame.
- * Default account: username=admin  password=1234
- */
 public class LoginFrame extends JFrame {
 
     private final String BG_IMAGE   = "background3.jpg";
@@ -41,7 +35,7 @@ public class LoginFrame extends JFrame {
 
     private void initUI() {
 
-        // ── Background ────────────────────────────────────────────────
+        //Background
         JLabel background = new JLabel(
                 new ImageIcon(new ImageIcon(BG_IMAGE)
                         .getImage().getScaledInstance(750, 600, Image.SCALE_SMOOTH))
@@ -49,7 +43,7 @@ public class LoginFrame extends JFrame {
         background.setLayout(new GridBagLayout());
         setContentPane(background);
 
-        // ── Outer column ──────────────────────────────────────────────
+        //Outer column
         JPanel mainBox = new JPanel();
         mainBox.setOpaque(false);
         mainBox.setLayout(new BoxLayout(mainBox, BoxLayout.Y_AXIS));
@@ -64,7 +58,7 @@ public class LoginFrame extends JFrame {
         mainBox.add(logoLabel);
         mainBox.add(Box.createVerticalStrut(25));
 
-        // ── Card ──────────────────────────────────────────────────────
+        //Card
         JPanel card = new JPanel(new GridBagLayout()) {
             @Override
             protected void paintComponent(Graphics g) {
@@ -92,13 +86,13 @@ public class LoginFrame extends JFrame {
         gbc.insets  = new Insets(6, 0, 12, 0);
         gbc.weightx = 1;
 
-        // Title
+        //Title
         JLabel title = new JLabel("User Login", SwingConstants.CENTER);
         title.setFont(new Font("Segoe UI", Font.BOLD, 16));
         gbc.gridy = 0;
         card.add(title, gbc);
 
-        // Username
+        //Username
         JLabel userLabel = new JLabel("Username");
         userLabel.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         gbc.gridy = 1;
@@ -108,7 +102,7 @@ public class LoginFrame extends JFrame {
         gbc.gridy = 2;
         card.add(usernameField, gbc);
 
-        // Password
+        //Password
         JLabel passLabel = new JLabel("Password");
         passLabel.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         gbc.gridy = 3;
@@ -118,14 +112,14 @@ public class LoginFrame extends JFrame {
         gbc.gridy = 4;
         card.add(passwordField, gbc);
 
-        // Error label
+        //Error label
         errorLabel = new JLabel(" ");
         errorLabel.setForeground(new Color(176, 0, 32));
         errorLabel.setFont(new Font("Segoe UI", Font.PLAIN, 12));
         gbc.gridy = 5;
         card.add(errorLabel, gbc);
 
-        // Login / Exit buttons
+        //Login / Exit buttons
         JPanel btnPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 15, 0));
         btnPanel.setOpaque(false);
 
@@ -141,7 +135,7 @@ public class LoginFrame extends JFrame {
         gbc.gridy = 6;
         card.add(btnPanel, gbc);
 
-        // "Don't have an account? Sign Up" link
+        //"Don't have an account? Sign Up" link
         JPanel signUpRow = new JPanel(new FlowLayout(FlowLayout.CENTER, 4, 0));
         signUpRow.setOpaque(false);
 
@@ -167,7 +161,7 @@ public class LoginFrame extends JFrame {
         mainBox.add(card);
         background.add(mainBox);
 
-        // ── Action listeners ──────────────────────────────────────────
+        //Action listeners
         loginButton.addActionListener(e -> handleLogin());
         passwordField.addActionListener(e -> handleLogin());   // Enter key
 
@@ -179,10 +173,7 @@ public class LoginFrame extends JFrame {
         });
     }
 
-    // ------------------------------------------------------------------
-    //  Login logic
-    // ------------------------------------------------------------------
-
+    //Login logic
     private void handleLogin() {
         String username = usernameField.getText().trim();
         String password = new String(passwordField.getPassword());
@@ -206,10 +197,7 @@ public class LoginFrame extends JFrame {
         }
     }
 
-    // ------------------------------------------------------------------
-    //  Helpers
-    // ------------------------------------------------------------------
-
+    //Helpers
     private void styleButton(JButton b) {
         b.setFont(new Font("Segoe UI", Font.PLAIN, 13));
         b.setPreferredSize(new Dimension(110, 28));
