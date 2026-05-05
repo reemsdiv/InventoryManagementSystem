@@ -55,7 +55,7 @@ private static boolean alertShown = false;
         JButton btnStock = createButton("Stock", "QrCode.png", btnsFont, btnBorder);
         JButton btnLowStock = createButton("View Low Stock", "Warning.png", btnsFont, btnBorder);
         JButton btnReports = createButton("Reports", "ReportIcon.png", btnsFont, btnBorder);
-        JButton btnTips = createButton("Tips", "Tips.png", btnsFont, btnBorder);
+        JButton btnReorder = createButton("Reorder Items", "Supplier.png", btnsFont, btnBorder);
 
        
         btnProducts.addActionListener(e -> {
@@ -78,9 +78,9 @@ private static boolean alertShown = false;
             new ReportsFrameUI().setVisible(true);
         });
         
-        btnTips.addActionListener(e -> {
-        dispose();
-        new TipsFrame().setVisible(true);
+        btnReorder.addActionListener(e -> {
+           dispose();
+           new SupplierReorderFrame().setVisible(true);
         });
         
 
@@ -88,7 +88,7 @@ private static boolean alertShown = false;
         centerPanel.add(btnStock);
         centerPanel.add(btnLowStock);
         centerPanel.add(btnReports);
-        centerPanel.add(btnTips);
+        centerPanel.add(btnReorder);
 
         add(centerPanel, BorderLayout.CENTER);
 
