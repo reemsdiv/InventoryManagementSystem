@@ -9,7 +9,7 @@ public class CreateUsersTable {
     public static void createUsersTable() {
         try {
             String url = "jdbc:mysql://localhost:3306/inventory_db";
-            Connection conn = DriverManager.getConnection(url, "root", "1234");
+            Connection conn = DriverManager.getConnection(url, "root", "reemwa");
 
             Statement stmt = conn.createStatement();
 

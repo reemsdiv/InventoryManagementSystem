@@ -87,7 +87,7 @@ public class SupplierReorderFrame extends JFrame {
         List<Product> lowStockList = dao.getLowStock();
 
         for (Product p : lowStockList) {
-            int requestedQty = p.getMinStock() * 2;
+            int requestedQty = (p.getMinStock() * 2) - p.getQuantity();
 
             model.addRow(new Object[]{
                     p.getId(),
