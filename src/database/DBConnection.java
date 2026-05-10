@@ -4,11 +4,13 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+
+//This class manages the connection between the application and the database.
 public class DBConnection {
 
     private static final String URL = "jdbc:mysql://localhost:3306/inventory_db";
     private static final String USER = "root";
-    private static final String PASS = "reemwa";
+    private static final String PASS = "root";
 
     public static Connection connect() {
     try {

@@ -60,7 +60,7 @@ private static boolean alertShown = false;
        
         btnProducts.addActionListener(e -> {
             dispose();
-            new ManageProductsFrame3().setVisible(true);
+            new ManageProductsFrame().setVisible(true);
         });
 
         btnStock.addActionListener(e -> {

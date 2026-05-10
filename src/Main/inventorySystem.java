@@ -6,7 +6,7 @@ import database.CreateUsersTable;
 import gui.LoginFrame;
 import javax.swing.*;
 
-public class NewMain {
+public class inventorySystem {
 
     public static void main(String[] args) {
 

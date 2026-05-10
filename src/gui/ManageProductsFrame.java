@@ -13,14 +13,14 @@ import java.util.List;
 
 // This class provides a GUI for managing products, allowing users to add, update, delete, and view product data
 
-public class ManageProductsFrame3 extends JFrame {
+public class ManageProductsFrame extends JFrame {
 
     private JTextField txtId, txtName, txtCategory, txtPrice, txtQuantity, txtMinStock;
     private JTable productTable;
     private DefaultTableModel tableModel;
     ProductManager manager = new ProductManager();
 
-    public ManageProductsFrame3() {
+    public ManageProductsFrame() {
 
         setTitle("Manage Products");
         setSize(950, 600);

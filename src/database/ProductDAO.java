@@ -5,6 +5,8 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+
+//Handles all database operations related to products. CRUD
 public class ProductDAO {
 
     // Add product

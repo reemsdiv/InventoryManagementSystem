@@ -13,9 +13,11 @@ public class ReportGenerator {
 
     private ProductManager productManager;
 
+    // Formatter used for file names
     private static final DateTimeFormatter FILE_FORMATTER =
             DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");
-
+    
+    // Formatter used for displaying date and time in reports 
     private static final DateTimeFormatter DISPLAY_FORMATTER =
             DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
@@ -23,7 +25,7 @@ public class ReportGenerator {
         this.productManager = productManager;
     }
 
-    
+    // Centers text inside a specific width
     private String center(String text, int width) {
         int padding = (width - text.length()) / 2;
         return " ".repeat(Math.max(0, padding)) + text;
@@ -50,6 +52,7 @@ public class ReportGenerator {
 
         sb.append(LINE).append("\n");
 
+        // Loop through all products and display information
         for (Product p : products) {
             sb.append(String.format("%-8s %-9s %-12s %-8.2f %-6d %-6d %-6s\n",
                     p.getId(),
@@ -61,6 +64,7 @@ public class ReportGenerator {
                     productManager.classifyStockStatus(p)));
         }
 
+        // Report Summary
         sb.append("\n").append(LINE).append("\n");
         sb.append("Total Products: ").append(products.size()).append("\n");
         sb.append(String.format("Total Inventory Value: $%.2f",
