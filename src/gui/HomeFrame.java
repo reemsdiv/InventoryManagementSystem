@@ -94,7 +94,7 @@ private static boolean alertShown = false;    // Prevents multiple low stock ale
 
         btnReports.addActionListener(e -> {      // Open reports screen
             dispose();
-            new ReportsFrameUI().setVisible(true);
+            new ReportsFrame().setVisible(true);
         });
         
         btnReorder.addActionListener(e -> {      // Open reorder items screen

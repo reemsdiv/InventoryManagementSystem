@@ -14,7 +14,7 @@ public class CreateProductsTable {
             String url = "jdbc:mysql://localhost:3306/inventory_db";
             
             // Establish connection with MySQL
-            Connection conn = DriverManager.getConnection(url, "root", "Aa1124728146");
+            Connection conn = DriverManager.getConnection(url, "root", "root");
 
             // Create Statement object to execute SQL queries
             Statement stmt = conn.createStatement();

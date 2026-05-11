@@ -10,7 +10,7 @@ import model.ReportGenerator;
  * GUI frame used for generating and exporting reports.
  * Users can generate stock, low stock, and sales reports.
  */
-public class ReportsFrameUI extends JFrame {
+public class ReportsFrame extends JFrame {
 
     // List displaying available report types
     private JList<String> reportList;
@@ -28,7 +28,7 @@ public class ReportsFrameUI extends JFrame {
     // Stores the last generated report
     private String lastReport = "";
 
-    public ReportsFrameUI() {
+    public ReportsFrame() {
 
         setTitle("Reports");
         setSize(950, 600);

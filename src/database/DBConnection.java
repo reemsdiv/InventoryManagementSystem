@@ -11,7 +11,7 @@ public class DBConnection {
     // Database URL
     private static final String URL = "jdbc:mysql://localhost:3306/inventory_db";
     private static final String USER = "root";   // MySQL username
-    private static final String PASS = "Aa1124728146";   // MySQL password
+    private static final String PASS = "root";   // MySQL password
 
     // Method to establish and return database connection
     public static Connection connect() {

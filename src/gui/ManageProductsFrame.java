@@ -134,6 +134,7 @@ public class ManageProductsFrame extends JFrame {
         gbc.anchor = GridBagConstraints.EAST;
         panel.add(btnPanel, gbc);
       
+        //Add button
         btnAdd.addActionListener(e -> {
             try {
                 manager.addProduct(
@@ -145,8 +146,8 @@ public class ManageProductsFrame extends JFrame {
                         txtMinStock.getText().trim()
                 );
                 JOptionPane.showMessageDialog(this, "Product added successfully!");
-                clearFields();
-                loadTable();
+                clearFields(); // Reset form after successful addition
+                loadTable(); // Refresh table to show new product
 
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(this, ex.getMessage(),
@@ -159,6 +160,7 @@ public class ManageProductsFrame extends JFrame {
             try {
                 String id = txtId.getText().trim();
 
+                // Ensure a product is selected before attempting deletion
                 if (id.isEmpty()) {
                     JOptionPane.showMessageDialog(this,
                             "Please select a product from the table first.",
@@ -166,6 +168,7 @@ public class ManageProductsFrame extends JFrame {
                     return;
                 }
 
+                // Ask for confirmation before permanently deleting
                 int confirm = JOptionPane.showConfirmDialog(this,
                         "Are you sure you want to delete product: " + id + "?",
                         "Confirm Delete", JOptionPane.YES_NO_OPTION);
@@ -183,11 +186,12 @@ public class ManageProductsFrame extends JFrame {
             }
         });
 
-       
+        //Update button
         btnUpdate.addActionListener(e -> {
             try {
                 String id = txtId.getText().trim();
 
+                // Ensure a product is selected before attempting an update
                 if (id.isEmpty()) {
                     JOptionPane.showMessageDialog(this,
                             "Please select a product from the table first.",
@@ -195,6 +199,7 @@ public class ManageProductsFrame extends JFrame {
                     return;
                 }
 
+                // Ask for confirmation before applying the update
                 int confirm = JOptionPane.showConfirmDialog(this,
                         "Are you sure you want to update product: " + id + "?",
                         "Confirm Update", JOptionPane.YES_NO_OPTION);
@@ -219,7 +224,7 @@ public class ManageProductsFrame extends JFrame {
             }
         });
 
-       
+        //Clear button
         btnClear.addActionListener(e -> clearFields());
         
         gbc.gridx = 0;
@@ -232,6 +237,8 @@ public class ManageProductsFrame extends JFrame {
         return panel;
     }
     
+    
+    //Clears all input text fields and deselects any selected row in the table.
     private void clearFields() {
         txtId.setText("");
         txtName.setText("");
@@ -263,6 +270,10 @@ public class ManageProductsFrame extends JFrame {
         panel.add(field, gbc);
     }
 
+    /**
+     * Fetches all products from the manager and populates the product table.
+     * Clears existing rows before reloading to avoid duplicates.
+     */
     private void loadTable() {
         try {
             tableModel.setRowCount(0);
