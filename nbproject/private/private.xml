@@ -3,27 +3,27 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Jory/Documents/InventoryManagementSystem/src/Main/inventorySystem.java</file>
-            <file>file:/C:/Users/Jory/Documents/InventoryManagementSystem/src/gui/LowStockFrame.java</file>
-            <file>file:/C:/Users/Jory/Documents/InventoryManagementSystem/src/database/ProductDAO.java</file>
-            <file>file:/C:/Users/Jory/Documents/InventoryManagementSystem/src/gui/ManageProductsFrame.java</file>
-            <file>file:/C:/Users/Jory/Documents/InventoryManagementSystem/src/database/CreateUsersTable.java</file>
-            <file>file:/C:/Users/Jory/Documents/InventoryManagementSystem/src/database/CreateProductsTable.java</file>
-            <file>file:/C:/Users/Jory/Documents/InventoryManagementSystem/src/model/ReorderService.java</file>
-            <file>file:/C:/Users/Jory/Documents/InventoryManagementSystem/src/network/SupplierServer.java</file>
-            <file>file:/C:/Users/Jory/Documents/InventoryManagementSystem/src/gui/HomeFrame.java</file>
-            <file>file:/C:/Users/Jory/Documents/InventoryManagementSystem/src/gui/ManageStockFrame.java</file>
-            <file>file:/C:/Users/Jory/Documents/InventoryManagementSystem/src/model/ProductManager.java</file>
-            <file>file:/C:/Users/Jory/Documents/InventoryManagementSystem/src/gui/LoginFrame.java</file>
-            <file>file:/C:/Users/Jory/Documents/InventoryManagementSystem/src/model/ReportGenerator.java</file>
-            <file>file:/C:/Users/Jory/Documents/InventoryManagementSystem/src/database/UserDAO.java</file>
-            <file>file:/C:/Users/Jory/Documents/InventoryManagementSystem/src/gui/ReportsFrameUI.java</file>
-            <file>file:/C:/Users/Jory/Documents/InventoryManagementSystem/src/database/CreateDatabase.java</file>
-            <file>file:/C:/Users/Jory/Documents/InventoryManagementSystem/src/thread/LowStockMonitorThread.java</file>
-            <file>file:/C:/Users/Jory/Documents/InventoryManagementSystem/src/network/ReorderClient.java</file>
-            <file>file:/C:/Users/Jory/Documents/InventoryManagementSystem/src/database/DBConnection.java</file>
-            <file>file:/C:/Users/Jory/Documents/InventoryManagementSystem/src/gui/SignUpFrame.java</file>
-            <file>file:/C:/Users/Jory/Documents/InventoryManagementSystem/src/model/Product.java</file>
+            <file>file:/C:/Users/User/Downloads/InventoryManagement%20(2)/InventoryManagement/src/Main/NewMain.java</file>
+            <file>file:/C:/Users/User/Downloads/InventoryManagement%20(2)/InventoryManagement/src/database/CreateDatabase.java</file>
+            <file>file:/C:/Users/User/Downloads/InventoryManagement%20(2)/InventoryManagement/src/database/CreateProductsTable.java</file>
+            <file>file:/C:/Users/User/Downloads/InventoryManagement%20(2)/InventoryManagement/src/database/DBConnection.java</file>
+            <file>file:/C:/Users/User/Downloads/InventoryManagement%20(2)/InventoryManagement/src/database/ProductDAO.java</file>
+            <file>file:/C:/Users/User/Downloads/InventoryManagement%20(2)/InventoryManagement/src/gui/ReportsFrameUI.java</file>
+            <file>file:/C:/Users/User/Downloads/InventoryManagement%20(2)/InventoryManagement/src/gui/HomeFrame.java</file>
+            <file>file:/C:/Users/User/Downloads/InventoryManagement%20(2)/InventoryManagement/src/gui/ManageStockFrame.java</file>
+            <file>file:/C:/Users/User/Downloads/InventoryManagement%20(2)/InventoryManagement/src/gui/ManageProductsFrame3.java</file>
+            <file>file:/C:/Users/User/Downloads/InventoryManagement%20(2)/InventoryManagement/src/model/ReportGenerator.java</file>
+            <file>file:/C:/Users/User/Downloads/InventoryManagement%20(2)/InventoryManagement/src/model/ProductManager.java</file>
+            <file>file:/C:/Users/User/Downloads/InventoryManagement%20(2)/InventoryManagement/src/model/Product.java</file>
+            <file>file:/C:/Users/User/Downloads/InventoryManagement%20(2)/InventoryManagement/src/thread/LowStockMonitorThread.java</file>
+            <file>file:/C:/Users/User/Downloads/InventoryManagement%20(2)/InventoryManagement/src/gui/LowStockFrame.java</file>
+            <file>file:/C:/Users/User/Downloads/InventoryManagement%20(2)/InventoryManagement/src/gui/LoginFrame.java</file>
+            <file>file:/C:/Users/User/Downloads/InventoryManagement%20(2)/InventoryManagement/src/network/SupplierServer.java</file>
+            <file>file:/C:/Users/User/Downloads/InventoryManagement%20(2)/InventoryManagement/src/network/ReorderClient.java</file>
+            <file>file:/C:/Users/User/Downloads/InventoryManagement%20(2)/InventoryManagement/src/gui/SupplierReorderFrame.java</file>
+            <file>file:/C:/Users/User/Downloads/InventoryManagement%20(2)/InventoryManagement/src/gui/SignUpFrame.java</file>
+            <file>file:/C:/Users/User/Downloads/InventoryManagement%20(2)/InventoryManagement/src/database/CreateUsersTable.java</file>
+            <file>file:/C:/Users/User/Downloads/InventoryManagement%20(2)/InventoryManagement/src/model/ReorderService.java</file>
         </group>
     </open-files>
 </project-private>
