@@ -1,4 +1,3 @@
-
 package gui;
 
 import javax.swing.*;
@@ -9,7 +8,6 @@ import java.awt.*;
 import model.Product;
 import model.ProductManager;
 import java.util.List;
-
 
 // This class provides a GUI for managing products, allowing users to add, update, delete, and view product data
 

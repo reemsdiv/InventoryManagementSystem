@@ -8,15 +8,11 @@ import javax.swing.table.*;
 import java.awt.*;
 import java.util.List;
 
-
-
 // This class displays low stock products in a table 
-
-
 public class LowStockFrame extends JFrame {
-
+    // Table to display low stock products
     private JTable productTable;
-    private JButton refreshButton, backButton;
+    private JButton refreshButton, backButton;   // Buttons
     private JLabel statusLabel;
 
     public LowStockFrame() {
@@ -26,26 +22,37 @@ public class LowStockFrame extends JFrame {
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setResizable(false);
 
-        
+        // ==========================================
+        // Background Image
+        // ==========================================
+
+        // Load background image
         ImageIcon bgIcon = new ImageIcon("background3.jpg");
         Image bgImage = bgIcon.getImage().getScaledInstance(950, 600, Image.SCALE_SMOOTH);
         JLabel background = new JLabel(new ImageIcon(bgImage));
         background.setLayout(new BorderLayout());
         setContentPane(background);
 
+        // ==========================================
+        // Root Panel
+        // ==========================================
         JPanel root = new JPanel(new BorderLayout(20, 20));
         root.setBorder(new EmptyBorder(25, 30, 25, 30));
         root.setOpaque(false);
 
-        
+        // ==========================================
+        // Header Section
+        // ==========================================
         JLabel title = new JLabel("Low Stock Products");
         title.setFont(new Font("SansSerif", Font.BOLD, 18));
 
         JPanel headerPanel = new JPanel(new BorderLayout());
         headerPanel.setOpaque(false);
-        headerPanel.add(title, BorderLayout.WEST);
+        headerPanel.add(title, BorderLayout.WEST);   // Add title to header
 
-        
+        // ==========================================
+        // Table Model
+        // ==========================================
         DefaultTableModel model = new DefaultTableModel(
                 new Object[]{"Product ID", "Name", "Category", "Quantity", "Min Level"}, 0
         ) {
@@ -63,16 +70,24 @@ public class LowStockFrame extends JFrame {
         productTable.setShowGrid(true);
         productTable.setGridColor(new Color(220, 210, 215));
 
+        // ==========================================
+        // Table Header Styling
+        // ==========================================
         JTableHeader tableHeader = productTable.getTableHeader();
         tableHeader.setFont(new Font("SansSerif", Font.BOLD, 14));
         tableHeader.setBackground(new Color(245, 220, 230));
         tableHeader.setReorderingAllowed(false);
 
+        // ==========================================
+        // Scroll Pane
+        // ==========================================
         JScrollPane scrollPane = new JScrollPane(productTable);
         scrollPane.getViewport().setBackground(new Color(252, 244, 247));
         scrollPane.setBorder(BorderFactory.createLineBorder(new Color(220, 210, 215)));
 
-   
+        // ==========================================
+        // Status Label
+        // ==========================================
         statusLabel = new JLabel("Status: Ready");
         statusLabel.setFont(new Font("SansSerif", Font.PLAIN, 12));
 
@@ -85,15 +100,25 @@ public class LowStockFrame extends JFrame {
         backButton.setFocusPainted(false);
         refreshButton.setPreferredSize(new Dimension(110, 32));
         backButton.setPreferredSize(new Dimension(110, 32));
+        
+        // ==========================================
+        // Button Functionalities
+        // ==========================================
 
+        // Reload low stock products
         refreshButton.addActionListener(e -> loadLowStock());
         backButton.addActionListener(e -> {
             dispose();
             new HomeFrame().setVisible(true);
         });
-
+        
+        // ==========================================
+        // Bottom Button Panel
+        // ==========================================
         JPanel buttonRow = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 0));
         buttonRow.setOpaque(false);
+        
+        // Add buttons
         buttonRow.add(refreshButton);
         buttonRow.add(backButton);
 
@@ -102,14 +127,19 @@ public class LowStockFrame extends JFrame {
         bottomPanel.add(statusLabel, BorderLayout.WEST);
         bottomPanel.add(buttonRow, BorderLayout.EAST);
 
-    
+        // ==========================================
+        // Add Components to Root Panel
+        // ==========================================
         root.add(headerPanel, BorderLayout.NORTH);
         root.add(scrollPane, BorderLayout.CENTER);
         root.add(bottomPanel, BorderLayout.SOUTH);
 
         add(root, BorderLayout.CENTER);
-
+       
+        // Load low stock products when frame opens
         loadLowStock();
+        
+        // Display frame
         setVisible(true);
     }
     
@@ -117,11 +147,12 @@ public class LowStockFrame extends JFrame {
     private void loadLowStock() {
         try {
             ProductDAO dao = new ProductDAO();
-            List<Product> list = dao.getLowStock();
+            List<Product> list = dao.getLowStock();   // Retrieve low stock products
 
             DefaultTableModel model = (DefaultTableModel) productTable.getModel();
             model.setRowCount(0);
 
+            // Add products to table
             for (Product p : list) {
                 model.addRow(new Object[]{
                         p.getId(),
@@ -131,7 +162,8 @@ public class LowStockFrame extends JFrame {
                         p.getMinStock()
                 });
             }
-
+            
+            // Update status message
             if (list.isEmpty()) {
                 statusLabel.setText("Status: All stock levels are OK.");
             } else {
@@ -140,6 +172,8 @@ public class LowStockFrame extends JFrame {
 
         } catch (Exception e) {
             e.printStackTrace();
+            
+            // Display error dialog
             JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             statusLabel.setText("Status: Error loading data.");
         }

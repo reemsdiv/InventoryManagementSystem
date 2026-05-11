@@ -1,6 +1,4 @@
-
 package gui;
-
 
 import network.ReorderClient;
 import javax.swing.*;
@@ -12,7 +10,7 @@ import model.ReorderService;
 import java.util.List;
 
 public class SupplierReorderFrame extends JFrame {
-     private JTable table;
+    private JTable table;
     private DefaultTableModel model;
 
     public SupplierReorderFrame() {
